@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class univers extends Model
 {
     use HasFactory;
+    
+    public function heroes()
+    {
+        return $this->hasMany(Hero::class, 'univers_id');
+    }
 }

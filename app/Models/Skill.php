@@ -9,4 +9,9 @@ class Skill extends Model
 {
     protected $table = 'skill';
     use HasFactory;
+
+    public function heroes()
+    {
+        return $this->belongsToMany(Hero::class, 'hero_skill', 'skill_id', 'hero_id');
+    }
 }
