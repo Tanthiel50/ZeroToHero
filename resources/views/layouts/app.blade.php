@@ -51,10 +51,13 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->pseudo }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('user.edit', $user = Auth::user() ) }}" >
+                                        Mon Compte
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -73,6 +76,21 @@
         </nav>
 
         <main class="py-4">
+            <div class="container-fluid text-center">
+                @if (session()->has('message'))
+                    <p class="alert alert-success">{{ session()->get('message') }}</p>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach($earrors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
             @yield('content')
         </main>
     </div>

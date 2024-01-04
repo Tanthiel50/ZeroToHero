@@ -10,7 +10,7 @@ class Hero extends Model
     use HasFactory;
 
     protected $table = 'hero';
-    protected $with = ['skill', 'univers'];
+    protected $with = ['skills', 'univers'];
 
     public function skills()
     {
