@@ -26,6 +26,20 @@
         <button class="btn btn-danger" type="submit">Supprimer</button>
     </form>
 @endif
-
+<h2>Héros Similaires</h2>
+<div class="row">
+    @foreach($similarHeroes as $similarHero)
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ $similarHero->image }}" class="card-img-top" alt="{{ $similarHero->name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $similarHero->name }}</h5>
+                    <p class="card-text">{{ $similarHero->description }}</p>
+                    <a href="{{ route('hero.show', $similarHero->id) }}" class="btn btn-primary">Voir Plus</a>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
 </div>
 @endsection

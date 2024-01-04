@@ -26,8 +26,8 @@ class HeroController extends Controller
      */
     public function create(Skill $skill, univers $univers)
     {
-        $skills = Skill::all(); 
-        $universes = Univers::all(); 
+        $skills = Skill::all();
+        $universes = Univers::all();
         $heroes = Hero::all();
 
         if (Gate::allows('create-hero')) {
@@ -83,7 +83,20 @@ class HeroController extends Controller
     {
         $user = auth()->user();
         $hero->load('skills');
-        return view('hero.show', compact('hero'));
+        $hero->load('skills');
+
+        // Récupérer les IDs des compétences du héros actuel
+        $skillIds = $hero->skills->pluck('id');
+
+        // Récupérer trois héros aléatoires qui partagent au moins un skill similaire
+        $similarHeroes = Hero::whereHas('skills', function ($query) use ($skillIds) {
+            $query->whereIn('skill_id', $skillIds);
+        })
+            ->where('id', '!=', $hero->id) // Exclure le héros actuel
+            ->inRandomOrder()
+            ->take(3)
+            ->get();
+        return view('hero.show', compact('hero', 'similarHeroes'));
     }
 
     /**
@@ -99,7 +112,6 @@ class HeroController extends Controller
         } else {
             return redirect()->route('hero.index')->with('message', 'Accès refusé.');
         }
-        
     }
 
 
