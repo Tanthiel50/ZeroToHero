@@ -1,0 +1,41 @@
+
+html{
+    background-color: #22223B;
+}
+
+.card {
+    border-color: #7209b7;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card img {
+    width: 320px;
+    height: 320px;
+    object-fit: cover;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #F72585;
+}
+
+.card-body {
+    color: #ffffff; /* ou une autre couleur de texte qui convient à votre fond sombre */
+}
+
+/* Soft shadow effect */
+.card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    box-shadow: 0 5px 15px rgba(247, 37, 133, 0.4);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.card:hover::after {
+    opacity: 1;
+}

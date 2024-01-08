@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1 class="mb-4">Zero To Hero</h1>
+    <h1 class="mb-4">From Zero To Hero</h1>
     <div class="row row-cols-1 row-cols-md-4 g-4">
         @foreach ($heroes as $hero)
         <div class="col">
@@ -11,9 +11,9 @@
                 <div class="card-body">
                     <a href="{{ route('hero.show', $hero->id) }}" class="stretched-link">Name: {{ $hero->name }}</a>
                     <p class="card-text">Description: {{ substr($hero->description, 0, 200) }}...</p>
-                    <p class="card-text"><small class="text-muted">Gender : {{ $hero->gender }}</small></p>
-                    <p class="card-text"><small class="text-muted">Species : {{ $hero->species }}</small></p>
-                    <p class="card-text"><small class="text-muted">Univers : {{ $hero->univers->name }}</small></p>
+                    <p class="card-text"><small>Gender : {{ $hero->gender }}</small></p>
+                    <p class="card-text"><small>Species : {{ $hero->species }}</small></p>
+                    <p class="card-text"><small>Univers : {{ $hero->univers->name }}</small></p>
                     <p>Compétences:</p>
                     <ul>
                         @foreach($hero->skills as $skill)

@@ -20,7 +20,7 @@
                 </div>
                 <div class="from-group">
                     <label for="image">Image actuelle</label>
-                    <img src="{{ asset('storage/profile_images/' . $user->image) }}" alt="Profile Image">
+                    <img class="profile-image" src="{{ asset('storage/profile_images/' . $user->image) }}" alt="Profile Image">
                     
                 </div>
                 <div class="from-group">

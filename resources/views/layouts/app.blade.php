@@ -10,8 +10,10 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -66,6 +68,9 @@
                                     </a>
                                     <a class="dropdown-item" href="{{ route('hero.index', $user = Auth::user() ) }}" >
                                         Les héros
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('hero.index', $user = Auth::user() ) }}" >
+                                        Création héro
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
