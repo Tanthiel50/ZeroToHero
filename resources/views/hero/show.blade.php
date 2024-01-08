@@ -6,7 +6,7 @@
 <div class="container">
     <h1>Détails du Héros: {{ $hero->name }}</h1>
     <div>
-        <p><strong>Image:</strong> <img src="{{ asset('storage/hero_images/' . $hero->image) }}" alt="hero Image">
+        <p><strong>Image:</strong> <img src="{{ asset('storage/profile_images/' . $hero->image) }}" alt="hero Image">
         <p><strong>Genre:</strong> {{ $hero->gender }}</p>
         <p><strong>Espèce:</strong> {{ $hero->species }}</p>
         <p><strong>Description:</strong> {{ $hero->description }}</p>
@@ -31,10 +31,10 @@
     @foreach($similarHeroes as $similarHero)
         <div class="col-md-4">
             <div class="card">
-                <img src="{{ $similarHero->image }}" class="card-img-top" alt="{{ $similarHero->name }}">
+                <img src="{{ asset('storage/profile_images/' . $similarHero->image) }}" class="card-img-top" alt="{{ $similarHero->image }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $similarHero->name }}</h5>
-                    <p class="card-text">{{ $similarHero->description }}</p>
+                    <p class="card-text">{{ substr($similarHero->description, 0, 200) }}...</p>
                     <a href="{{ route('hero.show', $similarHero->id) }}" class="btn btn-primary">Voir Plus</a>
                 </div>
             </div>

@@ -7,7 +7,7 @@
         @foreach ($heroes as $hero)
         <div class="col">
             <div class="card h-100">
-            <img src="{{ asset('storage/hero_images/' . $hero->image) }}" alt="hero Image">
+            <img src="{{ asset('storage/profile_images/' . $hero->image) }}" alt="hero Image">
                 <div class="card-body">
                     <a href="{{ route('hero.show', $hero->id) }}" class="stretched-link">Name: {{ $hero->name }}</a>
                     <p class="card-text">Description: {{ substr($hero->description, 0, 200) }}...</p>

@@ -26,12 +26,12 @@ class HeroController extends Controller
      */
     public function create(Skill $skill, univers $univers)
     {
-        $skill = Skill::all();
+        $skills = Skill::all();
         $universes = Univers::all();
         $heroes = Hero::all();
 
         if (Gate::allows('create-hero')) {
-            return view('hero.create', compact('skill', 'universes'));
+            return view('hero.create', compact('skills', 'universes'));
         } else {
             return redirect()->route('hero.index')->with('message', 'Accès refusé.');
         }
@@ -72,8 +72,8 @@ class HeroController extends Controller
     $hero->save();
 
     // Attachement des compétences si elles existent
-    if (!empty($validatedData['skill'])) {
-        $hero->skills()->attach($validatedData['skill']);
+    if (!empty($validatedData['skills'])) {
+        $hero->skills()->attach($validatedData['skills']);
     }
 
     // Redirection vers la page d'index des héros
@@ -151,8 +151,8 @@ class HeroController extends Controller
         $hero->save();
 
         // Mise à jour des compétences si elles existent
-        if (!empty($validatedData['skill']) && is_array($validatedData['skill'])) {
-            $hero->skills()->sync($validatedData['skill']);
+        if (!empty($validatedData['skills']) && is_array($validatedData['skills'])) {
+            $hero->skills()->sync($validatedData['skills']);
         }
 
         return redirect()->route('hero.index')->with('message', 'Héros mis à jour avec succès.');
