@@ -16,8 +16,14 @@
 
 
         <div class="mb-3">
-            <label for="image" class="form-label">Image (URL)</label>
-            <input type="text" class="form-control" id="image" name="image" value="{{ $hero->image }}">
+        <label for="image" class="form-label">Image (URL)</label>
+    <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image">
+
+    @error('image')
+    <span class="invalid-feedback" role="alert">
+        <strong>{{ $message }}</strong>
+    </span>
+    @enderror
         </div>
 
         <div class="mb-3">

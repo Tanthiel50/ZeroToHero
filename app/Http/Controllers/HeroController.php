@@ -130,7 +130,7 @@ class HeroController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'required|string',
+            'image' => 'nullable|image|max:2048',
             'gender' => 'required|string|max:255',
             'species' => 'required|string|max:255',
             'description' => 'required|string',
@@ -139,9 +139,13 @@ class HeroController extends Controller
             'skills.*' => 'exists:skill,id'
         ]);
 
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/profile_images');
+            $hero->image = basename($imagePath); // Mettre à jour l'image
+        }
+
         // Mise à jour des attributs du héros
         $hero->name = $validatedData['name'];
-        $hero->image = $validatedData['image'];
         $hero->gender = $validatedData['gender'];
         $hero->species = $validatedData['species'];
         $hero->description = $validatedData['description'];

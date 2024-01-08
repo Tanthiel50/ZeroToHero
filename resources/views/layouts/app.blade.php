@@ -69,7 +69,7 @@
                                     <a class="dropdown-item" href="{{ route('hero.index', $user = Auth::user() ) }}" >
                                         Les héros
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('hero.index', $user = Auth::user() ) }}" >
+                                    <a class="dropdown-item" href="{{ route('hero.create', $user = Auth::user() ) }}" >
                                         Création héro
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
