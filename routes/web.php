@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UniversController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('/user', App\Http\Controllers\UserController::class)->except('index', 'create', 'store');
 Route::resource('/hero', App\Http\Controllers\HeroController::class);
+Route::resource('/skill', App\Http\Controllers\SkillController::class);
+Route::resource('/univers', App\Http\Controllers\UniversController::class)->except('edit');
+
+

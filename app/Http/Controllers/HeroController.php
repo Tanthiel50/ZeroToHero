@@ -26,12 +26,12 @@ class HeroController extends Controller
      */
     public function create(Skill $skill, univers $univers)
     {
-        $skills = Skill::all();
+        $skill = Skill::all();
         $universes = Univers::all();
         $heroes = Hero::all();
 
         if (Gate::allows('create-hero')) {
-            return view('hero.create', compact('skills', 'universes'));
+            return view('hero.create', compact('skill', 'universes'));
         } else {
             return redirect()->route('hero.index')->with('message', 'Accès refusé.');
         }
@@ -41,39 +41,46 @@ class HeroController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        // Validation des données reçues
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'image' => 'required|string',
-            'gender' => 'required|string|max:255',
-            'species' => 'required|string|max:255',
-            'description' => 'required|string',
-            'univers_id' => 'required|exists:univers,id',
-            'skills' => 'nullable|array',
-            'skills.*' => 'exists:skill,id'
-        ]);
+{
+    // Validation des données reçues
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'image' => 'nullable|image|max:2048', // Valider un fichier image
+        'gender' => 'required|string|max:255',
+        'species' => 'required|string|max:255',
+        'description' => 'required|string',
+        'univers_id' => 'required|exists:univers,id',
+        'skills' => 'nullable|array',
+        'skills.*' => 'exists:skill,id'
+    ]);
 
-        // Création d'une nouvelle instance de Hero
-        $hero = new Hero();
-        $hero->name = $validatedData['name'];
-        $hero->image = $validatedData['image'];
-        $hero->gender = $validatedData['gender'];
-        $hero->species = $validatedData['species'];
-        $hero->description = $validatedData['description'];
-        $hero->univers_id = $validatedData['univers_id'];
+    // Création d'une nouvelle instance de Hero
+    $hero = new Hero();
+    $hero->name = $validatedData['name'];
+    $hero->gender = $validatedData['gender'];
+    $hero->species = $validatedData['species'];
+    $hero->description = $validatedData['description'];
+    $hero->univers_id = $validatedData['univers_id'];
 
-        // Sauvegarde de l'instance Hero
-        $hero->save();
-
-        // Attachement des compétences si elles existent
-        if (!empty($validatedData['skills']) && is_array($validatedData['skills'])) {
-            $hero->skills()->attach($validatedData['skills']);
-        }
-
-        // Redirection vers la page d'index des héros
-        return redirect()->route('hero.index')->with('message', 'Héros créé avec succès.');
+    // Gérer l'upload d'image
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('public/profile_images');
+        $hero->image = basename($imagePath); // Enregistrer uniquement le nom de l'image
     }
+
+    // Sauvegarde de l'instance Hero
+    $hero->save();
+
+    // Attachement des compétences si elles existent
+    if (!empty($validatedData['skill'])) {
+        $hero->skills()->attach($validatedData['skill']);
+    }
+
+    // Redirection vers la page d'index des héros
+    return redirect()->route('hero.index')->with('message', 'Héros créé avec succès.');
+}
+
+
 
 
     /**
@@ -107,7 +114,7 @@ class HeroController extends Controller
         $skills = Skill::all(); // Récupérez toutes les compétences
         $universes = Univers::all(); // Récupérez tous les univers
 
-        if (Gate::allows('edit-hero')) {
+        if (Gate::allows('create-hero')) {
             return view('hero.edit', compact('hero', 'skills', 'universes'));
         } else {
             return redirect()->route('hero.index')->with('message', 'Accès refusé.');
@@ -115,12 +122,40 @@ class HeroController extends Controller
     }
 
 
+
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Hero $hero)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'required|string',
+            'gender' => 'required|string|max:255',
+            'species' => 'required|string|max:255',
+            'description' => 'required|string',
+            'univers_id' => 'required|exists:univers,id',
+            'skills' => 'nullable|array',
+            'skills.*' => 'exists:skill,id'
+        ]);
+
+        // Mise à jour des attributs du héros
+        $hero->name = $validatedData['name'];
+        $hero->image = $validatedData['image'];
+        $hero->gender = $validatedData['gender'];
+        $hero->species = $validatedData['species'];
+        $hero->description = $validatedData['description'];
+        $hero->univers_id = $validatedData['univers_id'];
+
+        // Sauvegarde des modifications
+        $hero->save();
+
+        // Mise à jour des compétences si elles existent
+        if (!empty($validatedData['skill']) && is_array($validatedData['skill'])) {
+            $hero->skills()->sync($validatedData['skill']);
+        }
+
+        return redirect()->route('hero.index')->with('message', 'Héros mis à jour avec succès.');
     }
 
     /**

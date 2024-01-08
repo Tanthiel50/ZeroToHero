@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
     <h1>Créer un Nouveau Héros</h1>
-    <form action="{{ route('hero.store') }}" method="POST">
+    <form action="{{ route('hero.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="name" class="form-label">Nom du Héros</label>
@@ -14,7 +14,13 @@
 
         <div class="mb-3">
             <label for="image" class="form-label">Image (URL)</label>
-            <input type="text" class="form-control" id="image" name="image">
+            <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" required>
+
+                                @error('image')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
         </div>
 
         <div class="mb-3">

@@ -6,7 +6,7 @@
 <div class="container">
     <h1>Détails du Héros: {{ $hero->name }}</h1>
     <div>
-        <p><strong>Image:</strong> <img src="{{ $hero->image }}" alt="{{ $hero->name }}"></p>
+        <p><strong>Image:</strong> <img src="{{ asset('storage/hero_images/' . $hero->image) }}" alt="hero Image">
         <p><strong>Genre:</strong> {{ $hero->gender }}</p>
         <p><strong>Espèce:</strong> {{ $hero->species }}</p>
         <p><strong>Description:</strong> {{ $hero->description }}</p>

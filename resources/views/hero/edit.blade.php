@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
     <h1>Modifier le Héros: {{ $hero->name }}</h1>
-    <form action="{{ route('hero.update', $hero->id) }}" method="POST">
+    <form action="{{ route('hero.update', $hero->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 

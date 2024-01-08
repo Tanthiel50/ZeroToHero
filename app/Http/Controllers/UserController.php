@@ -37,11 +37,15 @@ class UserController extends Controller
     {
         $request->validate([
             'pseudo' => 'required|max:40',
-            'image' => 'nullable|string'
+            'image' => 'nullable|image|max:2048'
         ]);
 
         $user->pseudo = $request->input('pseudo');
-        $user->image = $request->input('image');
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/profile_images');
+            $user->image = basename($imagePath); // Enregistrer uniquement le nom de l'image
+        }
 
         $user->save();
 
@@ -53,7 +57,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if(Auth::user()->id == $user->id) {
+        if (Auth::user()->id == $user->id) {
             $user->delete();
             return redirect()->route('home')->with('message', 'Votre compte a bien été supprimé');
         } else {

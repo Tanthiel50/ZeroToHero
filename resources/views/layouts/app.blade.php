@@ -58,6 +58,15 @@
                                 <a class="dropdown-item" href="{{ route('user.edit', $user = Auth::user() ) }}" >
                                         Mon Compte
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('skill.index', $user = Auth::user() ) }}" >
+                                        Les skills
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('univers.index', $user = Auth::user() ) }}" >
+                                        Les univers
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('hero.index', $user = Auth::user() ) }}" >
+                                        Les héros
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -3,39 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Skill;
+use App\Models\univers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
-class SkillController extends Controller
+class UniversController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Skill $skill)
+    public function index(univers $univers)
     {
-        
-        $skills = Skill::all();
+        $univers = Univers::all();
         if (Gate::allows('create-hero')) {
-            return view('skill.index', compact('skills'));
+            return view('univers.index', compact('univers'));
         } else {
             return redirect()->route('hero.index')->with('message', 'Accès refusé.');
         }
-        
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Skill $skill)
+    public function create(univers $univers)
     {
-        $skills = Skill::all();
+        $univers = Univers::all();
         if (Gate::allows('create-hero')) {
-            return view('skill.create');
+            return view('univers.create');
         } else {
             return redirect()->route('hero.index')->with('message', 'Accès refusé.');
         }
-        
     }
 
     /**
@@ -47,11 +45,11 @@ class SkillController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $skill = new Skill();
-        $skill->name = $validatedData['name'];
-        $skill->save();
+        $univers = new Univers();
+        $univers->name = $validatedData['name'];
+        $univers->save();
 
-        return redirect()->route('skill.index')->with('message', 'Compétence créée avec succès.');
+        return redirect()->route('univers.index')->with('message', 'Univers créée avec succès.');
     }
 
     /**
@@ -60,55 +58,48 @@ class SkillController extends Controller
     public function show(string $id)
     {
         if (Gate::allows('create-hero')) {
-            return view('skill.show');
+            return view('univers.show');
         } else {
             return redirect()->route('hero.index')->with('message', 'Accès refusé.');
         }
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Skill $skill)
-    {
-        if (Gate::allows('create-hero')) {
-            return view('skill.edit', compact('skill'));
-        } else {
-            return redirect()->route('hero.index')->with('message', 'Accès refusé.');
-        }
-        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Skill $skill)
+    public function update(Request $request, univers $univers)
     {
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
         // Assignation manuelle des propriétés
-        $skill->name = $request->name;
+        $univers->name = $request->name;
 
         // Sauvegarde de la compétence
-        $skill->save();
+        $univers->save();
 
-        return redirect()->route('skill.index')->with('message', 'Compétence mise à jour avec succès.');
+        return redirect()->route('univers.index')->with('message', 'Univers mise à jour avec succès.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user, Skill $skill)
+    public function destroy(univers $univers)
     {
         $user = auth()->user();
         if ($user->role_id == 2) {
-            $skill->delete();
-            return redirect()->route('skill.index')->with('message', 'Le skill a été supprimé avec succès.');
+            try {
+                $univers->delete();
+                Log::info("Univers supprimé: " . $univers->id);
+                return redirect()->route('univers.index')->with('message', 'L\'univers a été supprimé avec succès.');
+            } catch (\Exception $e) {
+                Log::error("Erreur lors de la suppression de l'univers: " . $e->getMessage());
+                return back()->with('message', 'Erreur lors de la suppression de l\'univers.');
+            }
         } else {
-            return back()->with('message', 'Vous n\'etes pas autorisé à supprimer ce skill.');
+            return back()->with('message', 'Vous n\'êtes pas autorisé à supprimer cet univers.');
         }
     }
+
 }

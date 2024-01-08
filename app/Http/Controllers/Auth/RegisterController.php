@@ -51,7 +51,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'pseudo' => ['required', 'string', 'max:255'],
-            'image' => ['required', 'string', 'max:40'],
+            'image' => ['required', 'image', 'max:2048'], // Valide un fichier image avec une taille maximale
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -65,9 +65,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $imagePath = $data['image']->store('public/hero_images');
         return User::create([
             'pseudo' => $data['pseudo'],
-            'image' => $data['image'],
+            'image' => basename($imagePath), // Sauvegarder uniquement le nom de l'image
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
